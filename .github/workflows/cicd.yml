@@ -25,9 +25,11 @@ jobs:
     needs: [ init ]
     steps: 
       - name: checkout code
+        id: checkout
         uses: actions/checkout@v4
         with:
           ref: test
+          path: my_folder
 
       # - name: Build my app
       #   run: mvn -B clean package
@@ -38,8 +40,9 @@ jobs:
           echo " building docker image"
           docker image build \
           -f ./docker/Dockerfile \
-          --build-arg IMAGE="Artifactory path"
-          --build-arg MAVEN_SCRIPT="mvn clean"
+          --build-arg IMAGE="${{ needs.init.outputs.image }}"
+          --build-arg MAVEN_SCRIPT="${{ needs.init.outputs.maven_script }}"
+          --build-arg CHECKOUT_DIR="${{ steps.checkout.outputs.path }}"
           -t my-image:12345
           . 
           docker push ${{ my-image:12345 }}

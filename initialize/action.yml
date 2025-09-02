@@ -9,6 +9,12 @@ outputs:
   app:
     description: "app name"
     value: ${{ }}
+  image:
+    description: "image to be build on"
+    value: ${{}}
+  maven_script:
+    description: "application runnable command"
+    value: ${{steps.outputs.echoMyName}}
 
 name:
 description:
@@ -26,6 +32,7 @@ runs:
         java-version: '17'
         distribution: 'temurin'
     - name: Echo my name
+      id: echoMyName
       run: |
         echo "${{inputs.my_name}}"
       shell: bash
