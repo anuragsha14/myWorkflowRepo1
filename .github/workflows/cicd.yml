@@ -29,8 +29,22 @@ jobs:
         with:
           ref: test
 
-      - name: Build my app
-        run: mvn -B clean package
+      # - name: Build my app
+      #   run: mvn -B clean package
+
+      - name: Build  docker image
+        id: build
+        run: |
+          echo " building docker image"
+          docker image build \
+          -f ./docker/Dockerfile \
+          --build-arg IMAGE="Artifactory path"
+          --build-arg MAVEN_SCRIPT="mvn clean"
+          -t my-image:12345
+          . 
+          docker push ${{ my-image:12345 }}
+      
+      
 
   test:
     runs-on: ubuntu-latest
