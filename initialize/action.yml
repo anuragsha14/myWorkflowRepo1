@@ -1,0 +1,31 @@
+inputs:
+  my_name:
+    required: true
+  release_version:
+    required: false
+    default: ''
+
+outputs:
+  app:
+    description: "app name"
+    value: ${{ }}
+
+name:
+description:
+runs:
+  using: "composite"
+  steps:
+    - name: checkout code
+      uses: actions/checkout@v4
+      with:
+        ref: test      
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Echo my name
+      run: |
+        echo "${{inputs.my_name}}"
+      shell: bash

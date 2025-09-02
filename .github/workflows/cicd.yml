@@ -13,16 +13,12 @@ jobs:
     name: Initialize
     runs-on: [mmc-ubuntu]
     steps:
-      - name: checkout code
-        uses: actions/checkout@v4
+      - name: init
+        id: init
+        uses: anuragsha14/myWorkflowRepo1/initialize@main
         with:
-          ref: test      
+          my_name: 'anvay'
       
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
 
   build:
     runs-on: ubuntu-latest
