@@ -1,8 +1,8 @@
 ARG IMAGE
-ARG MAVEN_SCRIPT
 FROM ${IMAGE} as base
 WORKDIR /app
 ARG MAVEN_SCRIPT
+ARG CHECKOUT_DIR
 
 RUN ls && \
     pwd  && \
