@@ -4,6 +4,6 @@ FROM ${IMAGE} as base
 WORKDIR /app
 ARG MAVEN_SCRIPT
 
-RUN ls
-RUN pwd
-RUN {MAVEN_SCRIPT}
+RUN ls && \
+    pwd  && \
+    {MAVEN_SCRIPT}
