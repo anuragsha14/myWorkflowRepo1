@@ -32,7 +32,6 @@ jobs:
         run: |
           echo " building docker image"
           docker image build \
-          --build-arg IMAGE="maven:3.9.9-eclipse-temurin-17" \
           --build-arg MAVEN_OPTS="-Xmx1024m" \
           --build-arg APP_ENV="dev" \
           -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest \
