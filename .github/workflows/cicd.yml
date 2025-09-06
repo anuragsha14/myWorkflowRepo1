@@ -23,8 +23,8 @@ jobs:
           echo " building docker image"
           docker image build \
           -f ./docker/Dockerfile \
-          --build-arg MAVEN_OPTS="-Xmx1024m"
-          --build-arg APP_ENV="dev"
+          --build-arg MAVEN_OPTS="-Xmx1024m" \
+          --build-arg APP_ENV="dev" \
           -t my-image:latest .
       
       - name: Run docker container
