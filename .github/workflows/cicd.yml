@@ -45,6 +45,7 @@ jobs:
   deployDev:
     runs-on: ubuntu-latest
     needs: [ build ]
+    environment: feature-dev
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
