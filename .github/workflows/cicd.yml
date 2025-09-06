@@ -56,15 +56,25 @@ jobs:
       - name: Pull Docker image from JFrog
         run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
 
-      - name: Run container in environment
-        run: |
-          docker run -d \
-            -p 8080:8080 \  # map ports (adjust as needed)
-            --name my-app \
-            trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
+      # - name: Run container in environment
+      #   run: |
+      #     docker run -d \
+      #       -p 8080:8080 \  # map ports (adjust as needed)
+      #       --name my-app \
+      #       trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
   
-  # deployStg:
-  #   runs-on: ubuntu-latest
-  #   needs: [ deployDev ]
+  deployStg:
+    runs-on: ubuntu-latest
+    needs: [ deployDev ]
+    environment: feature-stg
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Log in to JFrog Docker registry
+        run: echo "${{ secrets.JFROG_PASSWORD }}" | docker login trialx1vkqp.jfrog.io -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+
+      - name: Pull Docker image from JFrog
+        run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
      
 
