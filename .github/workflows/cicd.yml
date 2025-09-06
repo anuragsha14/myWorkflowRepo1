@@ -7,6 +7,10 @@ on:
          required: false
          type: string
          default: 'neha'
+      my_tag:
+         required: false
+         type: string
+         default: 'latest'
 
 
 jobs:
@@ -34,12 +38,12 @@ jobs:
           docker image build \
           --build-arg MAVEN_OPTS="-Xmx1024m" \
           --build-arg APP_ENV="dev" \
-          -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest \
+          -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:${{inputs.my_tag}} \
           .
       
       - name: Push docker image
         run: |
-          docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest
+          docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:${{inputs.my_tag}}
 
         
   deployDev:
@@ -54,7 +58,7 @@ jobs:
         run: echo "${{ secrets.JFROG_PASSWORD }}" | docker login trialx1vkqp.jfrog.io -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
       - name: Pull Docker image from JFrog
-        run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
+        run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:${{inputs.my_tag}}
 
       # - name: Run container in environment
       #   run: |
@@ -75,6 +79,6 @@ jobs:
         run: echo "${{ secrets.JFROG_PASSWORD }}" | docker login trialx1vkqp.jfrog.io -u ${{ secrets.JFROG_USERNAME }} --password-stdin
 
       - name: Pull Docker image from JFrog
-        run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
+        run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:${{inputs.my_tag}}
      
 
