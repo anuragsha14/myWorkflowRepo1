@@ -29,7 +29,8 @@ jobs:
           docker image build \
           --build-arg MAVEN_OPTS="-Xmx1024m" \
           --build-arg APP_ENV="dev" \
-          -t my-image:latest .
+          -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest \
+          .
       
       - name: Push docker image
         run: |
