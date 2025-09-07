@@ -1,0 +1,12 @@
+name: payout workflow file
+on:
+  workflow_call:
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+  job2:
+    runs-on: ubuntu-latest
+
+  job3:
+    runs-on: ubuntu-latest
