@@ -33,6 +33,8 @@ runs:
       id: echoMyName
       run: |
         echo "${{inputs.my_name}}"
-        core.setOutput(myTag, "1234")
-        
+        myTag = config.myTag
+        dockerFile = config.docker_file_path
+        echo "myTag" >>GITHUB.OUTPUTS
+        echo "dockerFile" >> GITHUB.OUTPUTS
       shell: bash
