@@ -32,10 +32,10 @@ jobs:
           -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest \
           .
       
-      - name: Push docker image
-        run: |
-          docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest
-  # test:
+  #     - name: Push docker image
+  #       run: |
+  #         docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest
+  # # test:
   #   runs-on: ubuntu-latest
   #   needs: [ build ]
   #   steps:
