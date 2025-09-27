@@ -27558,11 +27558,11 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(5742)
 const myName = core.getInput('name')
 
-async function name(myName) {
+async function name() {
     console.log('My name is : ', myName)
 }
 
-name(myName);
+name();
 module.exports = __webpack_exports__;
 /******/ })()
 ;
