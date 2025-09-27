@@ -31,7 +31,17 @@ jobs:
           --build-arg APP_ENV="dev" \
           -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest \
           .
-      
+  
+  testNodeJSCode:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - name: print message from node jobs
+        uses: anuragsha14/myWorkflowRepo1/createNodeJSStep@main
+        with:
+          name: "Neha"
+
   #     - name: Push docker image
   #       run: |
   #         docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest
@@ -74,3 +84,5 @@ jobs:
   #     - name: Run Docker container
   #       run: docker run --rm mydockerhubusername/my-app:latest 
   #       continue-on-error: true  
+
+  
