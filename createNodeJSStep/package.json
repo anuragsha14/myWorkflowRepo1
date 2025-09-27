@@ -1,19 +1,17 @@
 {
-    "name":"my test nodejs",
+    "name": "my test nodejs",
     "version": " 1.0.0",
     "description": "my file",
     "main": "main.js",
     "scripts": {
         "build": "ncc build --license license.txt",
-        "test":"",
-        "test-dev":""
+        "test": "",
+        "test-dev": ""
     },
     "author": "anuragsha",
     "license": "ISC",
     "dependencies": {
-        "@action/core": "1.11.1"
-    },
-    "devDependencies": {
-
+        "@actions/core": "^1.11.1",
+        "ncc": "^0.3.6"
     }
 }
