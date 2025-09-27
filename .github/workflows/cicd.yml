@@ -12,7 +12,7 @@ on:
          type: string
          default: 'latest'
       deployDev:
-        required: true
+        required: false
         type: string
         default: 'latest'
 
@@ -99,3 +99,4 @@ jobs:
         uses: anuragsha14/myWorkflowRepo1/createNodeJSStep@main
         with:
           name: "Neha"
+
