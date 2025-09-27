@@ -5,4 +5,4 @@ async function name(myName) {
     console.log('My name is : ', myName)
 }
 
-name();
+name(myName);
