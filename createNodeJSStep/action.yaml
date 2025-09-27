@@ -1,0 +1,12 @@
+name: ' test node'
+description: ' test'
+inputs:
+  name:
+    description: ''
+    required: true
+    default: ''
+outputs:
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
