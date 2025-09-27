@@ -7,95 +7,70 @@ on:
          required: false
          type: string
          default: 'neha'
-      my_tag:
-         required: false
-         type: string
-         default: 'latest'
-      deployDev:
-        required: false
-        type: string
-        default: 'latest'
-
 
 jobs:
-  # initialize:
-  #   runs-on: ubuntu-latest
-  #   outputs:
-  #     my_tag: ${{ steps.readConfig.outputs.myTag}}
-  #     dockerFile: ${{ steps.read.outputs.dockerFile}}
-  #   steps:      
-  #     - name: read configuration
-  #       id: readConfig
-  #       uses: anuragsha14/myWorkflowRepo1/initialize@main      
-      
-  # sonar_scan:
-  #   runs-on: ubuntu-latest
-  #   needs: [ initialize ]
-  #   steps:      
-  #     - name: read configuration
-  #       id: readConfig
-  #       uses: anuragsha14/myWorkflowRepo1/sonar@main
-  #       with:    
   build:
     runs-on: ubuntu-latest
-    # needs: [ initialize ]
     steps: 
       - name: checkout code
         id: checkout
         uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
-          branch: master
       
       - name: Log in to Jfrog
         run: |
            echo "${{ secrets.JFROG_PASSWORD }}" | \
            docker login ${{ secrets.JFROG_REGISTRY }} -u "${{ secrets.JFROG_USERNAME }}" --password-stdin
-    
+       
+
       - name: Build  docker image
         id: build
         run: |
           echo " building docker image"
           docker image build \
-          -f ${{ needs.initialize.outputs.dockerFile }} \
+          --build-arg MAVEN_OPTS="-Xmx1024m" \
           --build-arg APP_ENV="dev" \
-          --build-arg MAVEN_SCRIPT=${{needs.initialize.outputs.MAVENSCRIPT}}
-          --build-arg MY_IMAGE="${{needs.initialize.outputs.imageName}}""
-          -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:${{needs.initialize.outputs.myTag}} \
+          -t ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest \
           .
       
       - name: Push docker image
         run: |
-          docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:${{inputs.my_tag}}
+          docker push ${{ secrets.JFROG_REGISTRY}}/${{ secrets.JFROG_REPO}}/my-image:latest
+  # test:
+  #   runs-on: ubuntu-latest
+  #   needs: [ build ]
+  #   steps:
+  #     - name: checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: test
 
-       
-  deployDev:
-    runs-on: ubuntu-latest
-    needs: [ build ]
-    environment: feature-dev
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+  #     - name: Run Unit Tests
+  #       run: mvn test
+        
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: [ build, test ]
+  #   steps:
+  #     - name: checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         ref: test
+      
+  #     - name: Run My program
+  #       run: |
+  #         echo "Deploying my application"
+  #     - name: Log in to Docker Hub
+  #       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      
+  #     - name: Build Docker image
+  #       run: docker build -t mydockerhubusername/my-app:latest .
 
-      - name: Log in to JFrog Docker registry
-        run: echo "${{ secrets.JFROG_PASSWORD }}" | docker login trialx1vkqp.jfrog.io -u ${{ secrets.JFROG_USERNAME }} --password-stdin
+  #     - name: Push Docker image
+  #       run: docker push mydockerhubusername/my-app:latest
 
-      - name: Pull Docker image from JFrog
-        run: docker pull trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:${{inputs.my_tag}}
+  #     - name: Pull Docker image
+  #       run: docker pull mydockerhubusername/my-app:latest
 
-      # - name: Run container in environment
-      #   run: |
-      #     docker run -d \
-      #       -p 8080:8080 \  # map ports (adjust as needed)
-      #       --name my-app \
-      #       trialx1vkqp.jfrog.io/mydocker-docker-local/my-image:latest
-  
-  testNodeJSCode:
-    runs-on: ubuntu-latest
-    needs: [ build ]
-    steps:
-      - name: print message from node jobs
-        uses: anuragsha14/myWorkflowRepo1/createNodeJSStep@main
-        with:
-          name: "Neha"
-
+  #     - name: Run Docker container
+  #       run: docker run --rm mydockerhubusername/my-app:latest 
+  #       continue-on-error: true  

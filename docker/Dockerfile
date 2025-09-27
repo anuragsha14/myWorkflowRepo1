@@ -1,6 +1,6 @@
 # Use Maven with JDK 17
-FROM {IMAGE} AS builder
-ARG MAVEN_SCRIPT
+FROM maven:3.9.9-eclipse-temurin-17 AS builder
+
 # Pass build args (optional)
 ARG APP_ENV
 ARG MAVEN_OPTS
@@ -16,17 +16,11 @@ RUN mvn dependency:go-offline -B
 COPY src ./src
 
 # Build the app
-RUN mvn ${MAVEN_SCRIPT}
-
-#-----node project--
-COPY package.json .
-RUN npm install
-RUN npm run start
+RUN mvn clean package -DskipTests
 
 # ---- Runtime stage ----
 FROM eclipse-temurin:17-jdk AS runtime
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
-RUN cp entrypoint.sh . && chmod +x entrypoint.sh
-ENTRYPOINT 
-CMD ["echo", "Hello from container!"]
+
+CMD ["java", "-jar", "app.jar"]
