@@ -58,7 +58,6 @@ jobs:
           echo " building docker image"
           docker image build \
           -f ${{ needs.initialize.outputs.dockerFile }} \
-          --build-arg MAVEN_OPTS="-Xmx1024m" \
           --build-arg APP_ENV="dev" \
           --build-arg MAVEN_SCRIPT=${{needs.initialize.outputs.MAVENSCRIPT}}
           --build-arg MY_IMAGE="${{needs.initialize.outputs.imageName}}""
